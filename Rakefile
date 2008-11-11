@@ -29,9 +29,9 @@ end
 
 desc "Stop the app server"
 task :stop do
-	m = `netstat -lptn | grep 0.0.0.0:#{port}`.match(/LISTEN\s*(\d+)/)
+	m = `lsof -i -P | grep "*:#{port}" | grep LISTEN | awk ' { print $2 } '`
 	if m
-		pid = m[1].to_i
+		pid = m.to_i
 		puts "Killing old server #{pid}"
 		kill_process(pid)
 	end
