@@ -25,8 +25,14 @@ layout 'layout'
 ### Public
 
 get '/' do
-	posts = Post.reverse_order(:created_at).limit(10)
-	erb :index, :locals => { :posts => posts }, :layout => false
+  if params[:p]
+    post = Post.filter(:id => params[:p]).first
+	  stop [ 404, "Page not found" ] unless post
+		redirect post.url
+	else
+	  posts = Post.reverse_order(:created_at).limit(10)
+	  erb :index, :locals => { :posts => posts }, :layout => false
+	end
 end
 
 get '/past/:year/:month/:day/:slug/' do
