@@ -30,12 +30,10 @@ end
 desc "Stop the app server"
 task :stop do
 	m = `lsof -i -P | grep "*:#{port}" | grep LISTEN | awk ' { print $2 } '`
-	if m
+	if m.length > 0
 		pid = m.to_i
-		if pid != 0
-		  puts "Killing old server #{pid}"
-		  kill_process(pid)
-		end
+		puts "Killing old server #{pid}"
+		kill_process(pid)
 	end
 end
 
