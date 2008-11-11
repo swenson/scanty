@@ -4,12 +4,36 @@
 	<title><%= Blog.title %></title>
 	<link href="/main.css" rel="stylesheet" type="text/css" />
 	<link href="/feed" rel="alternate" title="Primary Feed" type="application/atom+xml" />
+	<link href="/SyntaxHighlighter.css" rel="stylesheet" type="text/css" />
+
+<script src="/js/shCore.js" type="text/javascript"></script>
+<!--<script src="/js/shBrushCSharp.js" type="text/javascript"></script>
+<script src="/js/shBrushCpp.js" type="text/javascript"></script>
+<script src="/js/shBrushCss.js" type="text/javascript"></script>
+<script src="/js/shBrushDelphi.js" type="text/javascript"></script>
+<script src="/js/shBrushJScript.js" type="text/javascript"></script>
+<script src="/js/shBrushJava.js" type="text/javascript"></script>
+<script src="/js/shBrushPhp.js" type="text/javascript"></script>-->
+<script src="/js/shBrushRuby.js" type="text/javascript"></script>
+<script src="/js/shBrushPython.js" type="text/javascript"></script>
+<!--<script src="/js/shBrushSql.js" type="text/javascript"></script>
+<script src="/js/shBrushVb.js" type="text/javascript"></script>
+<script src="/js/shBrushXml.js" type="text/javascript"></script>-->
+
+<script language="javascript">
+window.onload = function () {
+    dp.SyntaxHighlighter.ClipboardSwf = '/flash/clipboard.swf';
+    dp.SyntaxHighlighter.HighlightAll('code');
+}
+</script>
+
 </head>
 <body>
 <div id="header">
 	<div id="logo">
+		<img src="/images/chrisbluething.png" alt="blue thing" />
 		<h1><a href="/"><%= Blog.title %></a></h1>
-		<p>by <%= Blog.author %></p>
+		<p><%= Blog.subtitle %></p>
 	</div>
 </div>
 
@@ -25,10 +49,7 @@
 			<% end %>
 		</small></p>
 		<div class="entry">
-			<%= post.summary %>
-			<% if post.more? %>
-				<a href="<%= post.url %>">Continue reading &raquo;</a>
-			<% end %>
+			<%= post.body %>
 		</div>
 	</div>
 	<% end %>
@@ -42,7 +63,10 @@
 	<% end %>
 
 	<% if admin? %>
-		<div id="new_post"><a href="/posts/new"">New post</a></div>
+	  <div id="topbar">
+		  <a href="/users">Users</a> | 
+		  <a href="/posts/new">New post</a>
+		</div>
 	<% end %>
 </div>
 
@@ -65,8 +89,9 @@
 
 <div id="footer">
 	<p id="legal">
-	Content by <%= Blog.author %> | 
-	Design adapted from <a href="http://www.freecsstemplates.org/preview/replenish">Replenish</a>
+	Content by <%= Blog.owner %> | 
+	Design adapted from <a href="http://www.freecsstemplates.org/preview/replenish">Replenish</a> |
+	Based on <a href="http://github.com/adamwiggins/scanty/">Scanty</a> by <a href="http://adam.blog.heroku.com/">Adam Wiggins</a>
 </div>
 </body>
 </html>

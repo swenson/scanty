@@ -1,0 +1,9 @@
+<h1>Users</h1>
+<table class="users">
+<% users.each do |user| %>
+	<tr>
+		<td class="name"><a href="/users/<%= user.name %>"><%= user.name %></a></td>
+		<td class="display_name">(<%= user.display_name %>)</td>
+	</tr>
+<% end %>
+</table>

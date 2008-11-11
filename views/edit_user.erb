@@ -1,0 +1,9 @@
+<form action="<%= url %>" method="post" name="edit">
+<div class="userzoom">
+  <input type="hidden" name="oldname" value="<%= user.name %>" />
+	<p class="name"><input type="text" name="name" value="<%= user.name %>" /> (name)</p>
+	<p class="display_name"><input type="text" name="display_name" value="<%= user.display_name %>" /> (displayname)</p>
+	<p class="password"><input type="password" name="password" value="" /> (password)</p>
+	<div class="edit"><input type="submit" value="Save" /></div>
+</div>
+</form>

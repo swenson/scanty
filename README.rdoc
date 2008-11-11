@@ -2,11 +2,23 @@
 
 == Overview
 
-Scanty is blogging software.  Software for my blog, to be exact:
+Scanty is blogging software.  Software for Adam Wiggins's blog, to be exact:
 http://adam.blog.heroku.com
 
 It is not a blogging engine, but it's small and easy to modify, so it could be
 the starting point for your blog, too.
+
+== New Features
+
+The original blogging software by Adam has been extended by Christopher to
+support some new features as well:
+
+* Multiple users
+* Display names for users
+* Salted, hashed passwords for users
+* Separate configuration file
+* Syntax highlighing for code
+    (by alex.gorbatchev: http://code.google.com/p/syntaxhighlighter/)
 
 == Features
 

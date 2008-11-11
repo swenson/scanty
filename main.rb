@@ -2,27 +2,17 @@ require 'rubygems'
 require 'sinatra'
 require 'sequel'
 
-configure do
-	Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://blog.db')
-
-	require 'ostruct'
-	Blog = OpenStruct.new(
-		:title => 'a scanty blog',
-		:author => 'John Doe',
-		:url_base => 'http://localhost:4567/',
-		:admin_password => 'changeme',
-		:admin_cookie_key => 'scanty_admin',
-		:admin_cookie_value => '51d6d976913ace58',
-		:disqus_shortname => nil
-	)
-end
-
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/config')
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
+require 'config'
 require 'post'
+require 'user'
+require 'session'
 
 helpers do
 	def admin?
-		request.cookies[Blog.admin_cookie_key] == Blog.admin_cookie_value
+	  Session.clean
+		Session.map(:data).include? request.cookies[Blog.admin_cookie_key]
 	end
 
 	def auth
@@ -80,8 +70,44 @@ get '/auth' do
 end
 
 post '/auth' do
-	set_cookie(Blog.admin_cookie_key, Blog.admin_cookie_value) if params[:password] == Blog.admin_password
+	if User.all.select { |s| 
+	   SHA1.hexdigest(params[:password] + s.salt) ==
+		 s.salted_hashed_password }.length > 0 then
+	 	cookie = rand(2**128).to_s(16)
+	 	set_cookie(Blog.admin_cookie_key, cookie) 
+		session = Session.new :created_at => Time.now, :data => cookie
+		session.save
+	end
 	redirect '/'
+end
+
+get '/users' do
+  auth
+	erb :users, :locals => { :users => User.all }
+end
+
+post '/users' do
+  auth
+	user = User.find(:name => params[:oldname])
+	if user
+	  user.name = params[:name]
+		user.display_name = params[:display_name]
+		user.password = params[:password] if params[:password] and params[:password].length > 0
+		user.save
+	end
+	redirect '/users'
+end
+
+get '/users/:name' do
+  auth
+	user = User.find(:name => params[:name])
+	user = User.new unless user
+	erb :edit_user, :locals => { :user => user, :url => '/users' }
+end
+
+get '/users/new' do
+  auth
+	erb :edit_user, :locals => { :user => User.new, :url => '/users' }
 end
 
 get '/posts/new' do
