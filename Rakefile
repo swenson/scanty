@@ -32,8 +32,10 @@ task :stop do
 	m = `lsof -i -P | grep "*:#{port}" | grep LISTEN | awk ' { print $2 } '`
 	if m
 		pid = m.to_i
-		puts "Killing old server #{pid}"
-		kill_process(pid)
+		if pid != 0
+		  puts "Killing old server #{pid}"
+		  kill_process(pid)
+		end
 	end
 end
 
