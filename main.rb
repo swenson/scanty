@@ -1,8 +1,18 @@
 require 'rubygems'
 require 'sinatra'
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/vendor/sequel'
 require 'sequel'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/config')
+
+error do
+	e = request.env['sinatra.error']
+	puts e.to_s
+	puts e.backtrace.join("\n")
+	"Application error"
+end
+
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'config'
 require 'post'

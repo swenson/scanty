@@ -1,4 +1,6 @@
-require 'rdiscount'
+require File.dirname(__FILE__) + '/../vendor/maruku/maruku'
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
 
 class Post < Sequel::Model
@@ -51,7 +53,7 @@ class Post < Sequel::Model
 	########
 
 	def to_html(markdown)
-		h = RDiscount.new(markdown).to_html
+		h = Maruku.new(markdown).to_html
 		h.gsub(/<code>([^<]+)<\/code>/m) do
 			convertor = Syntax::Convertors::HTML.for_syntax "ruby"
 			highlighted = convertor.convert($1)
