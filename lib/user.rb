@@ -12,7 +12,7 @@ class User < Sequel::Model
 	end
 
 	def password=(pass)
-	  salted_hashed_password = SHA1.hexdigest(pass + salt)
+	  self.salted_hashed_password = SHA1.hexdigest(pass + self.salt)
 	end
 end
 
